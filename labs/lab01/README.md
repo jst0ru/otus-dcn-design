@@ -39,16 +39,16 @@
 |spine1|Et3|10.73.1.5/31|spine1 to leaf3|...|leaf3|Et1|10.73.1.4/31|leaf3 to spine1|
 |spine1|Et4|10.73.1.7/31|spine1 to leaf4|...|leaf4|Et1|10.73.1.6/31|leaf4 to spine1|
 |spine1|Et5|10.73.1.9/31|spine1 to leaf5|...|leaf5|Et1|10.73.1.8/31|leaf5 to spine1|
-|spine2|Et1|10.73.2.1/31|spine2 to leaf1|...|leaf1|Et1|10.73.2.0/31|leaf1 to spine2|
-|spine2|Et2|10.73.2.3/31|spine2 to leaf2|...|leaf2|Et1|10.73.2.2/31|leaf2 to spine2|
-|spine2|Et3|10.73.2.5/31|spine2 to leaf3|...|leaf3|Et1|10.73.2.4/31|leaf3 to spine2|
-|spine2|Et4|10.73.2.7/31|spine2 to leaf4|...|leaf4|Et1|10.73.2.6/31|leaf4 to spine2|
-|spine2|Et5|10.73.2.9/31|spine2 to leaf5|...|leaf5|Et1|10.73.2.8/31|leaf5 to spine2|
-|spine3|Et1|10.73.3.1/31|spine3 to leaf1|...|leaf1|Et1|10.73.3.0/31|leaf1 to spine3|
-|spine3|Et2|10.73.3.3/31|spine3 to leaf2|...|leaf2|Et1|10.73.3.2/31|leaf2 to spine3|
-|spine3|Et3|10.73.3.5/31|spine3 to leaf3|...|leaf3|Et1|10.73.3.4/31|leaf3 to spine3|
-|spine3|Et4|10.73.3.7/31|spine3 to leaf4|...|leaf4|Et1|10.73.3.6/31|leaf4 to spine3|
-|spine3|Et5|10.73.3.9/31|spine3 to leaf5|...|leaf5|Et1|10.73.3.8/31|leaf5 to spine3|
+|spine2|Et1|10.73.2.1/31|spine2 to leaf1|...|leaf1|Et2|10.73.2.0/31|leaf1 to spine2|
+|spine2|Et2|10.73.2.3/31|spine2 to leaf2|...|leaf2|Et2|10.73.2.2/31|leaf2 to spine2|
+|spine2|Et3|10.73.2.5/31|spine2 to leaf3|...|leaf3|Et2|10.73.2.4/31|leaf3 to spine2|
+|spine2|Et4|10.73.2.7/31|spine2 to leaf4|...|leaf4|Et2|10.73.2.6/31|leaf4 to spine2|
+|spine2|Et5|10.73.2.9/31|spine2 to leaf5|...|leaf5|Et2|10.73.2.8/31|leaf5 to spine2|
+|spine3|Et1|10.73.3.1/31|spine3 to leaf1|...|leaf1|Et3|10.73.3.0/31|leaf1 to spine3|
+|spine3|Et2|10.73.3.3/31|spine3 to leaf2|...|leaf2|Et3|10.73.3.2/31|leaf2 to spine3|
+|spine3|Et3|10.73.3.5/31|spine3 to leaf3|...|leaf3|Et3|10.73.3.4/31|leaf3 to spine3|
+|spine3|Et4|10.73.3.7/31|spine3 to leaf4|...|leaf4|Et3|10.73.3.6/31|leaf4 to spine3|
+|spine3|Et5|10.73.3.9/31|spine3 to leaf5|...|leaf5|Et3|10.73.3.8/31|leaf5 to spine3|
 |spine1|Lo0|10.73.1.100/32|spine1 loopback| | | | | |
 |spine2|Lo0|10.73.2.100/32|spine2 loopback| | | | | |
 |spine3|Lo0|10.73.3.100/32|spine3 loopback| | | | | |
