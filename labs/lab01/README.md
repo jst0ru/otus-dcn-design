@@ -41,3 +41,39 @@
 |spine3|Et3|10.73.3.5/31|spine3 to leaf3|...|leaf3|Et1|10.73.3.4/31|leaf3 to spine3|
 |spine3|Et4|10.73.3.7/31|spine3 to leaf4|...|leaf4|Et1|10.73.3.6/31|leaf4 to spine3|
 |spine3|Et5|10.73.3.9/31|spine3 to leaf5|...|leaf5|Et1|10.73.3.8/31|leaf5 to spine3|
+
+## Автоматизация настроек
+Не хотелось выполнять однотипную операцию 30 раз, поэтому для применения настроек был разработан скрипт [listswitches.py](listswitches.py).
+Скрипт выполняет следующие функции на машине с eve-ng:
+1. При запуске без параметров: поиск запущенных экземпляров quemu и их открытых портов telnet, логин  в каждый и определение hostname. Выполняется команда:
+> \>show hostname
+2. При запуске с параметром hostname: конфигурирование hostname для экземпляра, отвечающего на определенном порту. Выполняются команды:
+> \>enable
+> \#conf t
+> \(config)#hostname _новоеимя_
+> \(config)#wri mem
+3. При запуске c параметром config: конфигурирование интерфейсов согласно указанному файлу yaml с настройками. Выполняются команды (пример для одного интерфейса):
+> \>enable
+> \#conf t
+> \(config)#interface Et1
+> \(config-if-Et1)#no switchport
+> \(config-if-Et1)#ip address ...
+> \(config-if-Et1)#ip description ...
+> \(config-if-Et1)#exit
+> \(config)#wri mem
+
+Ниже примеры запуска скрипта.
+Список экземпляров:
+```jst@evelab:~$ ./listswitches.py
+[sudo] password for jst:
+found telnet ports [32769, 32770, 32771, 32772, 32773, 32774, 32775, 32776]
+port 32769 hostname spine1 time 0.343
+port 32770 hostname spine2 time 0.34
+port 32771 hostname spine3 time 0.326
+port 32772 hostname leaf1 time 0.341
+port 32773 hostname leaf2 time 0.353
+port 32774 hostname leaf3 time 0.339
+port 32775 hostname leaf4 time 0.341
+port 32776 hostname leaf5 time 0.327
+jst@evelab:~$```
+
