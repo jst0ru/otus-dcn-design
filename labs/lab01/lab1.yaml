@@ -1,0 +1,113 @@
+spine1:
+  interfaces:
+    Et1:
+      ip: 10.73.1.1/31
+      description: "spine1 to leaf1"
+    Et2:
+      ip: 10.73.1.3/31
+      description: "spine1 to leaf2"
+    Et3:
+      ip: 10.73.1.5/31
+      description: "spine1 to leaf3"
+    Et4:
+      ip: 10.73.1.7/31
+      description: "spine1 to leaf4"
+    Et5:
+      ip: 10.73.1.9/31
+      description: "spine1 to leaf5"
+
+spine2:
+  interfaces:
+    Et1:
+      ip: 10.73.2.1/31
+      description: "spine2 to leaf1"
+    Et2:
+      ip: 10.73.2.3/31
+      description: "spine2 to leaf2"
+    Et3:
+      ip: 10.73.2.5/31
+      description: "spine2 to leaf3"
+    Et4:
+      ip: 10.73.2.7/31
+      description: "spine2 to leaf4"
+    Et5:
+      ip: 10.73.2.9/31
+      description: "spine2 to leaf5"
+
+spine3:
+  interfaces:
+    Et1:
+      ip: 10.73.3.1/31
+      description: "spine3 to leaf1"
+    Et2:
+      ip: 10.73.3.3/31
+      description: "spine3 to leaf2"
+    Et3:
+      ip: 10.73.3.5/31
+      description: "spine3 to leaf3"
+    Et4:
+      ip: 10.73.3.7/31
+      description: "spine3 to leaf4"
+    Et5:
+      ip: 10.73.3.9/31
+      description: "spine3 to leaf5"
+
+leaf1:
+  interfaces:
+    Et1:
+      ip: 10.73.1.0/31
+      description: "leaf1 to spine1"
+    Et2:
+      ip: 10.73.2.0/31
+      description: "leaf1 to spine2"
+    Et3:
+      ip: 10.73.3.0/31
+      description: "leaf1 to spine3"
+
+leaf2:
+  interfaces:
+    Et1:
+      ip: 10.73.1.2/31
+      description: "leaf2 to spine1"
+    Et2:
+      ip: 10.73.2.2/31
+      description: "leaf2 to spine2"
+    Et3:
+      ip: 10.73.3.2/31
+      description: "leaf2 to spine3"
+
+leaf3:
+  interfaces:
+    Et1:
+      ip: 10.73.1.4/31
+      description: "leaf3 to spine1"
+    Et2:
+      ip: 10.73.2.4/31
+      description: "leaf3 to spine2"
+    Et3:
+      ip: 10.73.3.4/31
+      description: "leaf3 to spine3"
+
+leaf4:
+  interfaces:
+    Et1:
+      ip: 10.73.1.6/31
+      description: "leaf4 to spine1"
+    Et2:
+      ip: 10.73.2.6/31
+      description: "leaf4 to spine2"
+    Et3:
+      ip: 10.73.3.6/31
+      description: "leaf4 to spine3"
+
+leaf5:
+  interfaces:
+    Et1:
+      ip: 10.73.1.8/31
+      description: "leaf5 to spine1"
+    Et2:
+      ip: 10.73.2.8/31
+      description: "leaf5 to spine2"
+    Et3:
+      ip: 10.73.3.8/31
+      description: "leaf5 to spine3"

@@ -1,0 +1,11 @@
+leaf5:
+  interfaces:
+    Et1:
+      ip: 10.73.1.8/31
+      description: "leaf5 to spine1"
+    Et2:
+      ip: 10.73.2.8/31
+      description: "leaf5 to spine2"
+    Et3:
+      ip: 10.73.3.8/31
+      description: "leaf5 to spine3"
