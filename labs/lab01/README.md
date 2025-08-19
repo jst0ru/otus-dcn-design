@@ -22,6 +22,14 @@
  - _l_ - (номер leaf * 2) - 1 для spine и (номер leaf * 2) - 2 для leaf
  - /31 - префикс сети на 2 адреса
 
+Шаблон для loopback:
+|**10.73.s.10l/32**|
+|:-:|
+ - 73 - код ЦОД 
+ - _s_ - номер spine для spine и 0 для leaf
+ - _l_ - 0 для spine и номер leaf для leaf
+ - /32 - префикс сети на 1 адрес
+
 Таблица распределения адресов на портах устройств:
 
 |Device1|Port|Address|Description|...|Device2|Port|Address|Description|
@@ -41,6 +49,14 @@
 |spine3|Et3|10.73.3.5/31|spine3 to leaf3|...|leaf3|Et1|10.73.3.4/31|leaf3 to spine3|
 |spine3|Et4|10.73.3.7/31|spine3 to leaf4|...|leaf4|Et1|10.73.3.6/31|leaf4 to spine3|
 |spine3|Et5|10.73.3.9/31|spine3 to leaf5|...|leaf5|Et1|10.73.3.8/31|leaf5 to spine3|
+|spine1|Lo0|10.73.1.100/32|spine1 loopback| | | | | |
+|spine2|Lo0|10.73.2.100/32|spine2 loopback| | | | | |
+|spine3|Lo0|10.73.3.100/32|spine3 loopback| | | | | |
+|leaf1|Lo0|10.73.0.101/32|leaf1 loopback| | | | | |
+|leaf2|Lo0|10.73.0.102/32|leaf2 loopback| | | | | |
+|leaf3|Lo0|10.73.0.103/32|leaf3 loopback| | | | | |
+|leaf4|Lo0|10.73.0.104/32|leaf4 loopback| | | | | |
+|leaf5|Lo0|10.73.0.105/32|leaf5 loopback| | | | | |
 
 ## Автоматизация настроек
 Не хотелось выполнять однотипную операцию 30 раз, поэтому для применения настроек был разработан скрипт [listswitches.py](listswitches.py).
@@ -171,21 +187,9 @@ Trying 127.0.0.1...
 Connected to 127.0.0.1.
 Escape character is '^]'.
 spine1(config)#ena
-ena
-spine1(config)#conf t
-conf t
-spine1(config)#interface Et1
-interface Et1
-spine1(config-if-Et1)#no switchport
 
 <тут пропущен длинный листинг>
 
-leaf5(config-if-Et3)#ip address 10.73.3.8/31
-ip address 10.73.3.8/31
-leaf5(config-if-Et3)#description leaf5 to spine3
-description leaf5 to spine3
-leaf5(config-if-Et3)#exit
-exit
 leaf5(config)#wr mem
 wr mem
 Copy completed successfully.
@@ -194,3 +198,5 @@ leaf5(config)#exit
 ======= all done, took 20.516 seconds
 jst@evelab:~$
 ```
+
+Чуть не забыл про loopback, конфигурация в отдельном файле [loopback.yaml](loopback.yaml).
