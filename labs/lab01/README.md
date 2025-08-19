@@ -91,7 +91,7 @@ leaf5(config)#exit
 jst@evelab:~$
 ```
 
-Конфигурирование одного коммутатора малым yaml:
+Конфигурирование одного коммутатора [leaf5.yaml](leaf5.yaml):
 
 ```
 jst@evelab:~$ ./listswitches.py config leaf5.yaml
@@ -152,7 +152,7 @@ leaf5(config)#exit
 jst@evelab:~$
 ```
 
-Применение полной конфигурации ко всем 8 устройствам:
+Конфигурирование всех 8 устройств [lab1.yaml](lab1.yaml):
 
 ```
 jst@evelab:~$ ./listswitches.py config lab1.yaml
