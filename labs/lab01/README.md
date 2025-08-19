@@ -13,23 +13,29 @@
 В эмуляторе EVE-NG CE была собрана следующая топология:
 ![](lab1-topology.png)
 
-Был выбран следующий шаблон адресации для underlay-сети:
-|**10.73.s.l/31**, где:|
-|:-:|
-|  |
-
-
- - 73 - код ЦОД
- - 
-
-
-|  |
-|:-:|
-| Текст по центру |
-
-
+## Распределение адресов
+Был выбран следующий шаблон адресации p2p-линков для underlay-сети:
 |**10.73.s.l/31**|
 |:-:|
  - 73 - код ЦОД 
- - 73 - код ЦОД
- - 
+ - _s_ - номер spine
+ - _l_ - номер leaf *2
+ - /31 - префикс сети на 2 адреса
+Таблица распределения адресов на портах устройств:
+|Device1|Port|Address|Description|...|Device2|Port|Address|Description|
+|--|--|--|--|--|--|--|--|--|
+|spine1|Et1|10.73.1.1/31|spine1 to leaf1|...|leaf1|Et1|10.73.1.0/31|leaf1 to spine1|
+|spine1|Et2|10.73.1.3/31|spine1 to leaf2|...|leaf2|Et1|10.73.1.2/31|leaf2 to spine1|
+|spine1|Et3|10.73.1.5/31|spine1 to leaf3|...|leaf3|Et1|10.73.1.4/31|leaf3 to spine1|
+|spine1|Et4|10.73.1.7/31|spine1 to leaf4|...|leaf4|Et1|10.73.1.6/31|leaf4 to spine1|
+|spine1|Et5|10.73.1.9/31|spine1 to leaf5|...|leaf5|Et1|10.73.1.8/31|leaf5 to spine1|
+|spine2|Et1|10.73.2.1/31|spine2 to leaf1|...|leaf1|Et1|10.73.2.0/31|leaf1 to spine2|
+|spine2|Et2|10.73.2.3/31|spine2 to leaf2|...|leaf2|Et1|10.73.2.2/31|leaf2 to spine2|
+|spine2|Et3|10.73.2.5/31|spine2 to leaf3|...|leaf3|Et1|10.73.2.4/31|leaf3 to spine2|
+|spine2|Et4|10.73.2.7/31|spine2 to leaf4|...|leaf4|Et1|10.73.2.6/31|leaf4 to spine2|
+|spine2|Et5|10.73.2.9/31|spine2 to leaf5|...|leaf5|Et1|10.73.2.8/31|leaf5 to spine2|
+|spine3|Et1|10.73.3.1/31|spine3 to leaf1|...|leaf1|Et1|10.73.3.0/31|leaf1 to spine3|
+|spine3|Et2|10.73.3.3/31|spine3 to leaf2|...|leaf2|Et1|10.73.3.2/31|leaf2 to spine3|
+|spine3|Et3|10.73.3.5/31|spine3 to leaf3|...|leaf3|Et1|10.73.3.4/31|leaf3 to spine3|
+|spine3|Et4|10.73.3.7/31|spine3 to leaf4|...|leaf4|Et1|10.73.3.6/31|leaf4 to spine3|
+|spine3|Et5|10.73.3.9/31|spine3 to leaf5|...|leaf5|Et1|10.73.3.8/31|leaf5 to spine3|
