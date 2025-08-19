@@ -21,6 +21,7 @@
  - _s_ - номер spine
  - _l_ - номер leaf *2
  - /31 - префикс сети на 2 адреса
+
 Таблица распределения адресов на портах устройств:
 
 |Device1|Port|Address|Description|...|Device2|Port|Address|Description|
