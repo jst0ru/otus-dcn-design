@@ -50,6 +50,7 @@
 3. При запуске c параметром config: конфигурирование интерфейсов согласно указанному файлу yaml с настройками. Выполняются команды: enable, conf t, interface, no switchport, ip address, description, exit, wri mem.
 
 Ниже примеры запуска скрипта.
+
 Список экземпляров:
 
 ```jst@evelab:~$ ./listswitches.py
@@ -62,6 +63,25 @@ port 32772 hostname leaf1 time 0.341
 port 32773 hostname leaf2 time 0.353
 port 32774 hostname leaf3 time 0.339
 port 32775 hostname leaf4 time 0.341
-port 32776 hostname leaf5 time 0.327
+port 32776 hostname localhost time 0.327
 jst@evelab:~$```
 
+Установка hostname:
+
+```jst@evelab:~$ ./listswitches.py hostname 32776 leaf5
+found telnet ports [32769, 32770, 32771, 32772, 32773, 32774, 32775, 32776]
+will set leaf5 on 32776
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+localhost#ena
+ena
+localhost#conf t
+conf t
+localhost(config)#hostname leaf5
+hostname leaf5
+leaf5(config)#wr mem
+wr mem
+Copy completed successfully.
+leaf5(config)#exit
+===== done, took 0.999 seconds```
