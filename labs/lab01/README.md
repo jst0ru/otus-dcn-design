@@ -22,6 +22,7 @@
  - _l_ - номер leaf *2
  - /31 - префикс сети на 2 адреса
 Таблица распределения адресов на портах устройств:
+
 |Device1|Port|Address|Description|...|Device2|Port|Address|Description|
 |--|--|--|--|--|--|--|--|--|
 |spine1|Et1|10.73.1.1/31|spine1 to leaf1|...|leaf1|Et1|10.73.1.0/31|leaf1 to spine1|
