@@ -1,0 +1,40 @@
+spine1:
+  interfaces:
+    Lo0:
+      ip: 10.73.1.100/32
+      description: "spine1 loopback"
+spine2:
+  interfaces:
+    Lo0:
+      ip: 10.73.2.100/32
+      description: "spine2 loopback"
+spine3:
+  interfaces:
+    Lo0:
+      ip: 10.73.3.100/32
+      description: "spine3 loopback"
+leaf1:
+  interfaces:
+    Lo0:
+      ip: 10.73.0.101/32
+      description: "leaf1 loopback"
+leaf2:
+  interfaces:
+    Lo0:
+      ip: 10.73.0.102/32
+      description: "leaf2 loopback"
+leaf3:
+  interfaces:
+    Lo0:
+      ip: 10.73.0.103/32
+      description: "leaf3 loopback"
+leaf4:
+  interfaces:
+    Lo0:
+      ip: 10.73.0.104/32
+      description: "leaf4 loopback"
+leaf5:
+  interfaces:
+    Lo0:
+      ip: 10.73.0.105/32
+      description: "leaf5 loopback"
