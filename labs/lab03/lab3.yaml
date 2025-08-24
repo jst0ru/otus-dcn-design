@@ -1,0 +1,267 @@
+spine1:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.1100.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.1.100/32
+      description: "spine1 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.1.1/31
+      description: "spine1 to leaf1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.1.3/31
+      description: "spine1 to leaf2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.1.5/31
+      description: "spine1 to leaf3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et4:
+      ip: 10.73.1.7/31
+      description: "spine1 to leaf4"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et5:
+      ip: 10.73.1.9/31
+      description: "spine1 to leaf5"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+spine2:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.2100.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.2.100/32
+      description: "spine2 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.2.1/31
+      description: "spine2 to leaf1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.2.3/31
+      description: "spine2 to leaf2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.2.5/31
+      description: "spine2 to leaf3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et4:
+      ip: 10.73.2.7/31
+      description: "spine2 to leaf4"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et5:
+      ip: 10.73.2.9/31
+      description: "spine2 to leaf5"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+spine3:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.3100.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.3.100/32
+      description: "spine3 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.3.1/31
+      description: "spine3 to leaf1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.3.3/31
+      description: "spine3 to leaf2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.3.5/31
+      description: "spine3 to leaf3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et4:
+      ip: 10.73.3.7/31
+      description: "spine3 to leaf4"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et5:
+      ip: 10.73.3.9/31
+      description: "spine3 to leaf5"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+leaf1:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.0101.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.0.101/32
+      description: "leaf1 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.1.0/31
+      description: "leaf1 to spine1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.2.0/31
+      description: "leaf1 to spine2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.3.0/31
+      description: "leaf1 to spine3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+leaf2:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.0102.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.0.102/32
+      description: "leaf2 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.1.2/31
+      description: "leaf2 to spine1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.2.2/31
+      description: "leaf2 to spine2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.3.2/31
+      description: "leaf2 to spine3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+leaf3:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.0103.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.0.103/32
+      description: "leaf3 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.1.4/31
+      description: "leaf3 to spine1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.2.4/31
+      description: "leaf3 to spine2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.3.4/31
+      description: "leaf3 to spine3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+leaf4:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.0104.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.0.104/32
+      description: "leaf4 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.1.6/31
+      description: "leaf4 to spine1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.2.6/31
+      description: "leaf4 to spine2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.3.6/31
+      description: "leaf4 to spine3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+
+leaf5:
+  ip_routing: yes
+  isis: "N"
+  isis_address_family: "ipv4 unicast"
+  isis_net: "49.0001.0100.7300.0105.00"
+  interfaces:
+    Lo0:
+      ip: 10.73.0.105/32
+      description: "leaf5 loopback"
+      isis: "N"
+    Et1:
+      ip: 10.73.1.8/31
+      description: "leaf5 to spine1"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et2:
+      ip: 10.73.2.8/31
+      description: "leaf5 to spine2"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
+    Et3:
+      ip: 10.73.3.8/31
+      description: "leaf5 to spine3"
+      isis: "N"
+      isis_network: point-to-point
+      isis_circuit-type: level-1
