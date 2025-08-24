@@ -16,4 +16,5 @@
 Для запуска OSPF на каждом устройстве достаточно сделать следующее:
 1. Включить маршрутизацию: ```ip routing```
 2. Включить процесс OSPF: ```router ospf 1```
-3. На p2p и loopback интерфейсах указать минимальные настройки OSPF: ```ip ospf area 0``` ```ip ospf network point-to-point```
+3. Указать минимальные настройки для интерфейсов p2p: ```ip ospf area 0```  ```ip ospf network point-to-point```
+4. Указать минимальные настройки для инетрфейсов loopback: ```ip ospf area 0``` 
