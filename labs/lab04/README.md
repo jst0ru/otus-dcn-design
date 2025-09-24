@@ -299,27 +299,270 @@ spine3#show ip route
 4. Задать router-id (в нашем случае адрес Lo0): ```router-id 10.73.1.100```
 5. Далее необходимо объявить соседей. Для каждого соседа необходимо указать номер AS: ```neighbor ... remote-as 65500```
 6. Так же включим bfd для более быстрого обнаружения отказов: ```neighbor ... bfd```
-7. Соседей-лифов со стороны спайнов необходимо объявить как route-reflector-client, чтобы спайны выступали в роли RR: ```neighbor ... route-reflector-client```  ```neighbor ... next-hop-self```
-8. Эти настройки удобно задавать через пир-групы, причем все группы могут быть объявлены на всех устройствах, а в конфигах используются только нужные.
+7. Так как у каждоого лифа свой номер AS, каждого соседа-лифа со стороны спайнов необходимо объявить индивидуально, пир-группы тут не помогут: ```neighbor ... remote-as 6550_n_```
+8. При автоматизации настроек это не так важно, а при настройке вручную удобно использовать peer-filter: ```bgp listen-range: 10.73.1.0/24 peer-group LEAVES peer-filter AS```
+
+## Автоматизация настроек
+В скрипт [listswitches.py](listswitches.py) была добавлена обработка конфигурации bgp. В файл конфигурации [ebgp.yaml](ebgp.yaml) помимо настроек ip-адресов были добавлены настройки ebgp, глобальная секция с объявлением пир-групп, а так же настройки peer-filter. Ниже часть файла настроек, объявление пир-групп и по одному leaf и spine:
+
+```
+peer_groups:
+  LEAVES:
+    bfd: yes
+  SPINES:
+    remote-as: 65500
+    bfd: yes
+
+spine1:
+  ip_routing: yes
+  bgp:
+    AS: 65500
+    network: 10.73.1.100/32
+    router-id: 10.73.1.100
+    listen:
+      range: 10.73.1.0/24
+      peer-group: LEAVES
+      peer-filter: AS
+  peer-filter:
+    AS:
+      match: "as-range 65501-65599"
+      result: accept
+  interfaces:
+    Lo0:
+      ip: 10.73.1.100/32
+      description: "spine1 loopback"
+    Et1:
+      ip: 10.73.1.1/31
+      description: "spine1 to leaf1"
+    Et2:
+      ip: 10.73.1.3/31
+      description: "spine1 to leaf2"
+    Et3:
+      ip: 10.73.1.5/31
+      description: "spine1 to leaf3"
+    Et4:
+      ip: 10.73.1.7/31
+      description: "spine1 to leaf4"
+    Et5:
+      ip: 10.73.1.9/31
+      description: "spine1 to leaf5"
+leaf1:
+  ip_routing: yes
+  bgp:
+    AS: 65501
+    network: 10.73.0.101/32
+    router-id: 10.73.0.101
+    neighbours:
+      spine1:
+        address: 10.73.1.1
+        peer_group: SPINES
+      spine2:
+        address: 10.73.2.1
+        peer_group: SPINES
+      spine3:
+        address: 10.73.3.1
+        peer_group: SPINES
+  interfaces:
+    Lo0:
+      ip: 10.73.0.101/32
+      description: "leaf1 loopback"
+    Et1:
+      ip: 10.73.1.0/31
+      description: "leaf1 to spine1"
+    Et2:
+      ip: 10.73.2.0/31
+      description: "leaf1 to spine2"
+    Et3:
+      ip: 10.73.3.0/31
+      description: "leaf1 to spine3"
+```
+Демонстрация применения конфига (только секция BGP):
+```
+spine3>ena
+ena
+spine3#conf t
+conf t
+spine3(config)#ip routing
+ip routing
+spine3(config)#no router bgp
+no router bgp
+spine3(config)#router bgp 65500
+router bgp 65500
+spine3(config-router-bgp)#network 10.73.3.100/32
+network 10.73.3.100/32
+spine3(config-router-bgp)#router-id 10.73.3.100
+router-id 10.73.3.100
+spine3(config-router-bgp)#bgp listen range 10.73.3.0/24 peer-group LEAVES peer-filter AS
+bgp listen range 10.73.3.0/24 peer-group LEAVES peer-filter AS
+spine3(config-router-bgp)#neighbor LEAVES peer group
+neighbor LEAVES peer group
+spine3(config-router-bgp)#neighbor LEAVES bfd
+neighbor LEAVES bfd
+spine3(config-router-bgp)#neighbor SPINES peer group
+neighbor SPINES peer group
+spine3(config-router-bgp)#neighbor SPINES remote-as 65500
+neighbor SPINES remote-as 65500
+spine3(config-router-bgp)#neighbor SPINES bfd
+neighbor SPINES bfd
+spine3(config-router-bgp)#exit
+exit
+spine3(config)#peer-filter AS
+peer-filter AS
+spine3(config-peer-filter-AS)#match as-range 65501-65599 result accept
+match as-range 65501-65599 result accept
+spine3(config-peer-filter-AS)#exit
+exit
+
+leaf5>ena
+ena
+leaf5#conf t
+conf t
+leaf5(config)#ip routing
+ip routing
+leaf5(config)#no router bgp
+no router bgp
+leaf5(config)#router bgp 65505
+router bgp 65505
+leaf5(config-router-bgp)#network 10.73.0.105/32
+network 10.73.0.105/32
+leaf5(config-router-bgp)#router-id 10.73.0.105
+router-id 10.73.0.105
+leaf5(config-router-bgp)#neighbor LEAVES peer group
+neighbor LEAVES peer group
+leaf5(config-router-bgp)#neighbor LEAVES bfd
+neighbor LEAVES bfd
+leaf5(config-router-bgp)#neighbor SPINES peer group
+neighbor SPINES peer group
+leaf5(config-router-bgp)#neighbor SPINES remote-as 65500
+neighbor SPINES remote-as 65500
+leaf5(config-router-bgp)#neighbor SPINES bfd
+neighbor SPINES bfd
+leaf5(config-router-bgp)#neighbor 10.73.1.9 peer group SPINES
+neighbor 10.73.1.9 peer group SPINES
+leaf5(config-router-bgp)#neighbor 10.73.2.9 peer group SPINES
+neighbor 10.73.2.9 peer group SPINES
+leaf5(config-router-bgp)#neighbor 10.73.3.9 peer group SPINES
+neighbor 10.73.3.9 peer group SPINES
+leaf5(config-router-bgp)#exit
+exit
+```
+## Проверка установления соседства и таблицы маршрутизации
+В результате применения конфигурации на всех устройствах установилось соседство с подключенными устройствами, заполнились таблицы маршрутизации. 
+Пример для leaf4:
+```
+leaf4(config)#sho ip bgp sum
+BGP summary information for VRF default
+Router identifier 10.73.0.104, local AS number 65504
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.73.1.7        4  65500            754       749    0    0 12:22:58 Estab   5      5
+  10.73.2.7        4  65500            753       755    0    0 12:22:56 Estab   5      5
+  10.73.3.7        4  65500            751       753    0    0 12:22:54 Estab   5      5
+leaf4(config)#sho ip bgp
+BGP routing table information for VRF default
+Router identifier 10.73.0.104, local AS number 65504
+Route status codes: * - valid, > - active, # - not installed, E - ECMP head, e - ECMP
+                    S - Stale, c - Contributing to ECMP, b - backup, L - labeled-unicast
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+         Network                Next Hop            Metric  LocPref Weight  Path
+ * >     10.73.0.101/32         10.73.1.7             0       100     0       65500 65501 i
+ *       10.73.0.101/32         10.73.2.7             0       100     0       65500 65501 i
+ *       10.73.0.101/32         10.73.3.7             0       100     0       65500 65501 i
+ * >     10.73.0.102/32         10.73.1.7             0       100     0       65500 65502 i
+ *       10.73.0.102/32         10.73.2.7             0       100     0       65500 65502 i
+ *       10.73.0.102/32         10.73.3.7             0       100     0       65500 65502 i
+ * >     10.73.0.103/32         10.73.1.7             0       100     0       65500 65503 i
+ *       10.73.0.103/32         10.73.2.7             0       100     0       65500 65503 i
+ *       10.73.0.103/32         10.73.3.7             0       100     0       65500 65503 i
+ * >     10.73.0.104/32         -                     0       0       -       i
+ * >     10.73.0.105/32         10.73.1.7             0       100     0       65500 65505 i
+ *       10.73.0.105/32         10.73.2.7             0       100     0       65500 65505 i
+ *       10.73.0.105/32         10.73.3.7             0       100     0       65500 65505 i
+ * >     10.73.1.100/32         10.73.1.7             0       100     0       65500 i
+ * >     10.73.2.100/32         10.73.2.7             0       100     0       65500 i
+ * >     10.73.3.100/32         10.73.3.7             0       100     0       65500 i
+leaf4(config)#sho ip route
+
+VRF: default
+Gateway of last resort is not set
+
+ B E      10.73.0.101/32 [200/0] via 10.73.1.7, Ethernet1
+ B E      10.73.0.102/32 [200/0] via 10.73.1.7, Ethernet1
+ B E      10.73.0.103/32 [200/0] via 10.73.1.7, Ethernet1
+ C        10.73.0.104/32 is directly connected, Loopback0
+ B E      10.73.0.105/32 [200/0] via 10.73.1.7, Ethernet1
+ C        10.73.1.6/31 is directly connected, Ethernet1
+ B E      10.73.1.100/32 [200/0] via 10.73.1.7, Ethernet1
+ C        10.73.2.6/31 is directly connected, Ethernet2
+ B E      10.73.2.100/32 [200/0] via 10.73.2.7, Ethernet2
+ C        10.73.3.6/31 is directly connected, Ethernet3
+ B E      10.73.3.100/32 [200/0] via 10.73.3.7, Ethernet3
+```
+Пример для spine2:
+```
+spine2#sho ip bgp sum
+BGP summary information for VRF default
+Router identifier 10.73.2.100, local AS number 65500
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.73.2.0        4  65501            762       760    0    0 12:25:56 Estab   1      1
+  10.73.2.2        4  65502            760       758    0    0 12:25:52 Estab   1      1
+  10.73.2.4        4  65503            758       756    0    0 12:25:49 Estab   1      1
+  10.73.2.6        4  65504            758       756    0    0 12:25:45 Estab   1      1
+  10.73.2.8        4  65505            756       754    0    0 12:25:42 Estab   1      1
+spine2#
+spine2#sho ip bgp
+BGP routing table information for VRF default
+Router identifier 10.73.2.100, local AS number 65500
+Route status codes: * - valid, > - active, # - not installed, E - ECMP head, e - ECMP
+                    S - Stale, c - Contributing to ECMP, b - backup, L - labeled-unicast
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+         Network                Next Hop            Metric  LocPref Weight  Path
+ * >     10.73.0.101/32         10.73.2.0             0       100     0       65501 i
+ * >     10.73.0.102/32         10.73.2.2             0       100     0       65502 i
+ * >     10.73.0.103/32         10.73.2.4             0       100     0       65503 i
+ * >     10.73.0.104/32         10.73.2.6             0       100     0       65504 i
+ * >     10.73.0.105/32         10.73.2.8             0       100     0       65505 i
+ * >     10.73.2.100/32         -                     0       0       -       i
+spine2#
+spine2#sho ip rou
+
+VRF: default
+Gateway of last resort is not set
+
+ B E      10.73.0.101/32 [200/0] via 10.73.2.0, Ethernet1
+ B E      10.73.0.102/32 [200/0] via 10.73.2.2, Ethernet2
+ B E      10.73.0.103/32 [200/0] via 10.73.2.4, Ethernet3
+ B E      10.73.0.104/32 [200/0] via 10.73.2.6, Ethernet4
+ B E      10.73.0.105/32 [200/0] via 10.73.2.8, Ethernet5
+ C        10.73.2.0/31 is directly connected, Ethernet1
+ C        10.73.2.2/31 is directly connected, Ethernet2
+ C        10.73.2.4/31 is directly connected, Ethernet3
+ C        10.73.2.6/31 is directly connected, Ethernet4
+ C        10.73.2.8/31 is directly connected, Ethernet5
+ C        10.73.2.100/32 is directly connected, Loopback0
+```
+
+## Проверка связности
+Результат проверки связности при помощи функции test скрипта [listswitches.py](listswitches.py):
 
 | src \ dst | spine1 | spine2 | spine3 | leaf1 | leaf2 | leaf3 | leaf4 | leaf5 |
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-| spine1 | 0.08 ms | FAIL | FAIL | 1.96 ms | 1.65 ms | 6.87 ms | 2.17 ms | 13.07 ms |
-| spine2 | FAIL | 0.17 ms | FAIL | 25.35 ms | 8.59 ms | 39.63 ms | 2.05 ms | 2.39 ms |
-| spine3 | FAIL | FAIL | 0.42 ms | 2.00 ms | 1.92 ms | 17.08 ms | 3.26 ms | 1.93 ms |
-| leaf1 | 1.91 ms | 1.77 ms | 1.62 ms | 0.03 ms | FAIL | 69.22 ms | 16.73 ms | 3.54 ms |
-| leaf2 | 1.71 ms | 1.60 ms | 8.77 ms | 5.29 ms | 0.44 ms | 39.73 ms | 5.05 ms | 15.72 ms |
-| leaf3 | 1.75 ms | 1.55 ms | 1.61 ms | 3.28 ms | 11.87 ms | 0.11 ms | 33.80 ms | 31.66 ms |
-| leaf4 | 2.50 ms | 1.70 ms | 1.59 ms | 4.80 ms | 3.68 ms | 7.56 ms | 0.01 ms | 4.20 ms |
-| leaf5 | 2.00 ms | 1.72 ms | FAIL | 4.17 ms | 4.70 ms | 4.18 ms | 33.59 ms | 0.03 ms |
+| spine1 | 0.07 ms | FAIL | FAIL | 2.08 ms | 1.86 ms | 1.98 ms | 1.99 ms | 1.85 ms |
+| spine2 | FAIL | 0.08 ms | FAIL | 1.85 ms | 1.66 ms | 1.78 ms | 1.65 ms | 1.50 ms |
+| spine3 | FAIL | FAIL | 0.07 ms | 1.94 ms | 2.01 ms | 1.59 ms | 1.92 ms | 1.83 ms |
+| leaf1 | 1.90 ms | 1.87 ms | 1.78 ms | 0.07 ms | 3.58 ms | 3.25 ms | 3.39 ms | 3.26 ms |
+| leaf2 | 2.65 ms | 2.06 ms | 1.74 ms | 3.32 ms | 0.04 ms | 3.59 ms | 3.65 ms | 3.27 ms |
+| leaf3 | 1.57 ms | 2.37 ms | 1.69 ms | 3.24 ms | 3.49 ms | 0.05 ms | 3.27 ms | 3.25 ms |
+| leaf4 | 1.68 ms | 1.56 ms | 1.78 ms | 3.59 ms | 3.16 ms | 3.35 ms | 0.03 ms | 3.42 ms |
+| leaf5 | 1.60 ms | 1.85 ms | 1.71 ms | 3.32 ms | 3.07 ms | 3.27 ms | 3.30 ms | 0.05 ms |
 
-| src \ dst | spine1 | spine2 | spine3 | leaf1 | leaf2 | leaf3 | leaf4 | leaf5 |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-| spine1 | 0.11 ms | FAIL | FAIL | 1.71 ms | 2.39 ms | 1.87 ms | 1.88 ms | 3.70 ms |
-| spine2 | FAIL | 0.11 ms | FAIL | FAIL | 2.41 ms | 2.55 ms | 1.75 ms | 14.73 ms |
-| spine3 | FAIL | FAIL | 0.56 ms | 34.06 ms | 10.50 ms | 2.13 ms | 2.58 ms | 2.95 ms |
-| leaf1 | 1.81 ms | 2.38 ms | 2.70 ms | 0.04 ms | 41.69 ms | 6.61 ms | 51.26 ms | 23.36 ms |
-| leaf2 | 5.51 ms | 2.54 ms | 5.22 ms | 5.27 ms | 0.02 ms | 4.06 ms | 25.12 ms | 3.65 ms |
-| leaf3 | 2.57 ms | 10.70 ms | 2.69 ms | 18.35 ms | 3.83 ms | 0.12 ms | 3.94 ms | 26.10 ms |
-| leaf4 | 9.86 ms | 4.42 ms | 1.80 ms | 64.88 ms | 153.31 ms | 4.13 ms | 0.03 ms | 24.40 ms |
-| leaf5 | 2.30 ms | 1.66 ms | 1.92 ms | 10.90 ms | 3.41 ms | 6.34 ms | 3.30 ms | 0.01 ms |
+Наблюдения полностью совпадают с таковыми для iBGP:
+1. Минимальное время пинга самого себя.
+2. Время прохождения пинга между leaf и spine составляет около 1.5-2 мс - маршрут в 1 хоп.
+3. Время прохождения пинга между двумя leaf - около 3-4 мс, что косвенно говорит о маршруте в 2 хопа.
+4. Не проходят пинги между spine. Это ожидаемое поведение, потому что благодаря пир-фильтру спайны получают марщруты только до AS лифов, но не до своей AS.
