@@ -1,0 +1,258 @@
+peer_groups:
+  LEAVES:
+    bfd: yes
+  SPINES:
+    remote-as: 65500
+    bfd: yes
+
+spine1:
+  ip_routing: yes
+  bgp:
+    AS: 65500
+    network: 10.73.1.100/32
+    router-id: 10.73.1.100
+    listen:
+      range: 10.73.1.0/24
+      peer-group: LEAVES
+      peer-filter: AS
+  peer-filter:
+    AS:
+      match: "as-range 65501-65599"
+      result: accept
+  interfaces:
+    Lo0:
+      ip: 10.73.1.100/32
+      description: "spine1 loopback"
+    Et1:
+      ip: 10.73.1.1/31
+      description: "spine1 to leaf1"
+    Et2:
+      ip: 10.73.1.3/31
+      description: "spine1 to leaf2"
+    Et3:
+      ip: 10.73.1.5/31
+      description: "spine1 to leaf3"
+    Et4:
+      ip: 10.73.1.7/31
+      description: "spine1 to leaf4"
+    Et5:
+      ip: 10.73.1.9/31
+      description: "spine1 to leaf5"
+
+spine2:
+  ip_routing: yes
+  bgp:
+    AS: 65500
+    network: 10.73.2.100/32
+    router-id: 10.73.2.100
+    listen:
+      range: 10.73.2.0/24
+      peer-group: LEAVES
+      peer-filter: AS
+  peer-filter:
+    AS:
+      match: "as-range 65501-65599"
+      result: accept
+  interfaces:
+    Lo0:
+      ip: 10.73.2.100/32
+      description: "spine2 loopback"
+    Et1:
+      ip: 10.73.2.1/31
+      description: "spine2 to leaf1"
+    Et2:
+      ip: 10.73.2.3/31
+      description: "spine2 to leaf2"
+    Et3:
+      ip: 10.73.2.5/31
+      description: "spine2 to leaf3"
+    Et4:
+      ip: 10.73.2.7/31
+      description: "spine2 to leaf4"
+    Et5:
+      ip: 10.73.2.9/31
+      description: "spine2 to leaf5"
+
+spine3:
+  ip_routing: yes
+  bgp:
+    AS: 65500
+    network: 10.73.3.100/32
+    router-id: 10.73.3.100
+    listen:
+      range: 10.73.3.0/24
+      peer-group: LEAVES
+      peer-filter: AS
+  peer-filter:
+    AS:
+      match: "as-range 65501-65599"
+      result: accept
+  interfaces:
+    Lo0:
+      ip: 10.73.3.100/32
+      description: "spine3 loopback"
+    Et1:
+      ip: 10.73.3.1/31
+      description: "spine3 to leaf1"
+    Et2:
+      ip: 10.73.3.3/31
+      description: "spine3 to leaf2"
+    Et3:
+      ip: 10.73.3.5/31
+      description: "spine3 to leaf3"
+    Et4:
+      ip: 10.73.3.7/31
+      description: "spine3 to leaf4"
+    Et5:
+      ip: 10.73.3.9/31
+      description: "spine3 to leaf5"
+
+leaf1:
+  ip_routing: yes
+  bgp:
+    AS: 65501
+    network: 10.73.0.101/32
+    router-id: 10.73.0.101
+    neighbours:
+      spine1:
+        address: 10.73.1.1
+        peer_group: SPINES
+      spine2:
+        address: 10.73.2.1
+        peer_group: SPINES
+      spine3:
+        address: 10.73.3.1
+        peer_group: SPINES
+  interfaces:
+    Lo0:
+      ip: 10.73.0.101/32
+      description: "leaf1 loopback"
+    Et1:
+      ip: 10.73.1.0/31
+      description: "leaf1 to spine1"
+    Et2:
+      ip: 10.73.2.0/31
+      description: "leaf1 to spine2"
+    Et3:
+      ip: 10.73.3.0/31
+      description: "leaf1 to spine3"
+
+leaf2:
+  ip_routing: yes
+  bgp:
+    AS: 65502
+    network: 10.73.0.102/32
+    router-id: 10.73.0.102
+    neighbours:
+      spine1:
+        address: 10.73.1.3
+        peer_group: SPINES
+      spine2:
+        address: 10.73.2.3
+        peer_group: SPINES
+      spine3:
+        address: 10.73.3.3
+        peer_group: SPINES
+  interfaces:
+    Lo0:
+      ip: 10.73.0.102/32
+      description: "leaf2 loopback"
+    Et1:
+      ip: 10.73.1.2/31
+      description: "leaf2 to spine1"
+    Et2:
+      ip: 10.73.2.2/31
+      description: "leaf2 to spine2"
+    Et3:
+      ip: 10.73.3.2/31
+      description: "leaf2 to spine3"
+
+leaf3:
+  ip_routing: yes
+  bgp:
+    AS: 65503
+    network: 10.73.0.103/32
+    router-id: 10.73.0.103
+    neighbours:
+      spine1:
+        address: 10.73.1.5
+        peer_group: SPINES
+      spine2:
+        address: 10.73.2.5
+        peer_group: SPINES
+      spine3:
+        address: 10.73.3.5
+        peer_group: SPINES
+  interfaces:
+    Lo0:
+      ip: 10.73.0.103/32
+      description: "leaf3 loopback"
+    Et1:
+      ip: 10.73.1.4/31
+      description: "leaf3 to spine1"
+    Et2:
+      ip: 10.73.2.4/31
+      description: "leaf3 to spine2"
+    Et3:
+      ip: 10.73.3.4/31
+      description: "leaf3 to spine3"
+
+leaf4:
+  ip_routing: yes
+  bgp:
+    AS: 65504
+    network: 10.73.0.104/32
+    router-id: 10.73.0.104
+    neighbours:
+      spine1:
+        address: 10.73.1.7
+        peer_group: SPINES
+      spine2:
+        address: 10.73.2.7
+        peer_group: SPINES
+      spine3:
+        address: 10.73.3.7
+        peer_group: SPINES
+  interfaces:
+    Lo0:
+      ip: 10.73.0.104/32
+      description: "leaf4 loopback"
+    Et1:
+      ip: 10.73.1.6/31
+      description: "leaf4 to spine1"
+    Et2:
+      ip: 10.73.2.6/31
+      description: "leaf4 to spine2"
+    Et3:
+      ip: 10.73.3.6/31
+      description: "leaf4 to spine3"
+
+leaf5:
+  ip_routing: yes
+  bgp:
+    AS: 65505
+    network: 10.73.0.105/32
+    router-id: 10.73.0.105
+    neighbours:
+      spine1:
+        address: 10.73.1.9
+        peer_group: SPINES
+      spine2:
+        address: 10.73.2.9
+        peer_group: SPINES
+      spine3:
+        address: 10.73.3.9
+        peer_group: SPINES
+  interfaces:
+    Lo0:
+      ip: 10.73.0.105/32
+      description: "leaf5 loopback"
+    Et1:
+      ip: 10.73.1.8/31
+      description: "leaf5 to spine1"
+    Et2:
+      ip: 10.73.2.8/31
+      description: "leaf5 to spine2"
+    Et3:
+      ip: 10.73.3.8/31
+      description: "leaf5 to spine3"
